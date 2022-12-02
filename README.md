@@ -31,3 +31,46 @@ Improve the functionality such that after creating a new anecdote the applicatio
 
 **Solution:**
 Implemented as instructed.
+
+## Exercise 7.4: anecdotes and hooks step1
+**Task:**
+Simplify the anecdote creation form of your application with the useField custom hook we defined earlier.
+
+One natural place to save the custom hooks of your application is in the /src/hooks/index.js file.
+
+If you use the named export instead of the default export:
+```
+import { useState } from 'react'
+
+export const useField = (type) => {
+const [value, setValue] = useState('')
+
+const onChange = (event) => {
+setValue(event.target.value)
+}
+
+return {
+type,
+value,
+onChange
+}
+}
+
+// modules can have several named exports
+export const useAnotherHook = () => {
+// ...
+}
+```
+Then importing happens in the following way:
+```
+import  { useField } from './hooks'
+
+const App = () => {
+// ...
+const username = useField('text')
+// ...
+}
+```
+
+**Solution:**
+Implemented as instructed.
