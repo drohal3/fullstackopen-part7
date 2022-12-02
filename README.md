@@ -74,3 +74,16 @@ const username = useField('text')
 
 **Solution:**
 Implemented as instructed.
+
+## Exercise 7.5: anecdotes and hooks step2
+**Task:**
+Add a button to the form that you can use to clear all the input fields.
+Expand the functionality of the useField hook so that it offers a new reset operation for clearing the field.
+
+Depending on your solution, you may see the following warning in your console:
+<picture showing Invalid value for prop reset error in console>
+
+We will return to this warning in the next exercise.
+
+**Solution:**
+Implemented as instructed, got the error in console. Replaced form onSubmit action with click action for creating new anecdotes.
