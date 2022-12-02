@@ -61,22 +61,26 @@ const Footer = () => (
 )
 
 const CreateNew = (props) => {
-  const contentField = useField('text')
-  const authorField = useField('text')
-  const infoField = useField('text')
+  const { reset: resetContentField, ...contentField } = useField('text')
+  const { reset: resetAuthorField, ...authorField } = useField('text')
+  const { reset: resetInfoField, ...infoField } = useField('text')
 
-  const newAnecdote = (content, author, info) => {
+  const newAnecdote = (e, content, author, info) => {
+    e.preventDefault()
     props.addNew({
       content,
       author,
       info,
       votes: 0
     })
-
-
   }
 
-
+  const resetFields = (e) => {
+    e.preventDefault()
+    resetContentField()
+    resetAuthorField()
+    resetInfoField()
+  }
 
   return (
     <div>
@@ -94,8 +98,8 @@ const CreateNew = (props) => {
           url for more info
           <input {...infoField} />
         </div>
-        <button onClick={ () => newAnecdote(contentField.value,authorField.value, infoField.value) }>create</button>
-        <button onClick={ () => {contentField.reset(); authorField.reset(); infoField.reset()} }>reset</button>
+        <button onClick={ (e) => newAnecdote(e, contentField.value,authorField.value, infoField.value) }>create</button>
+        <button onClick={ (e) => resetFields(e) }>reset</button>
       </form>
     </div>
   )

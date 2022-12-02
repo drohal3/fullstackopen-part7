@@ -87,3 +87,36 @@ We will return to this warning in the next exercise.
 
 **Solution:**
 Implemented as instructed, got the error in console. Replaced form onSubmit action with click action for creating new anecdotes.
+
+## Exercise 7.6: anecdotes and hooks step3
+If your solution did not cause a warning to appear in the console, you have already finished this exercise.
+
+If you see the warning in the console, make the necessary changes to get rid of the Invalid value for prop `reset` on <input> tag console warning.
+
+The reason for this warning is that after making the changes to your application, the following expression:
+```
+<input {...content}/>
+```
+Essentially, is the same as this:
+```
+<input
+value={content.value}
+type={content.type}
+onChange={content.onChange}
+reset={content.reset}
+/>
+```
+The input element should not be given a reset attribute.
+
+One simple fix would be to not use the spread syntax and write all of the forms like this:
+```
+<input
+value={username.value}
+type={username.type}
+onChange={username.onChange}
+/>
+```
+If we were to do this, we would lose much of the benefit provided by the useField hook. Instead, come up with a solution that fixes the issue, but is still easy to use with spread syntax.
+
+**Solution:**
+Destructured useField into resetFunction and called it from separate function as described [here](https://stackoverflow.com/questions/73930529/invalid-value-for-prop-reset-on-input-tag).
