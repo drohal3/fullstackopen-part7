@@ -1,54 +1,49 @@
-import {useState, useEffect} from "react";
-import axios from 'axios'
+import { useState, useEffect } from "react";
+import axios from "axios";
 
 const useResource = (baseUrl) => {
-  const [resources, setResources] = useState([])
+  const [resources, setResources] = useState([]);
 
-  let token = null
+  let token = null;
 
-  const setToken = newToken => {
-    token = `bearer ${newToken}`
-  }
+  const setToken = (newToken) => {
+    token = `bearer ${newToken}`;
+  };
 
   const config = {
     headers: { Authorization: token },
-  }
+  };
 
   // ...
   const fetchAll = async () => {
     try {
-      const response = await axios
-        .get(baseUrl, config)
-      setResources(response.data)
-    } catch (e) {
+      const response = await axios.get(baseUrl, config);
+      setResources(response.data);
+    } catch (e) {}
+  };
 
-    }
-  }
-
-  useEffect( () => {
-    fetchAll()
-  },[])
+  useEffect(() => {
+    fetchAll();
+  }, []);
 
   const create = async (resource) => {
-    let ret = null
+    let ret = null;
     try {
-      const response = await axios.post(baseUrl, resource, config)
-      setResources([...resources, response.data])
-      ret = response.data
+      const response = await axios.post(baseUrl, resource, config);
+      setResources([...resources, response.data]);
+      ret = response.data;
     } catch (e) {
-      console.log(e)
+      console.log(e);
     }
 
-    return ret
-  }
+    return ret;
+  };
 
   const service = {
-    create
-  }
+    create,
+  };
 
-  return [
-    resources, service
-  ]
-}
+  return [resources, service];
+};
 
-export default useResource
+export default useResource;

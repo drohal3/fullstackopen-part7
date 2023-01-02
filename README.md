@@ -223,3 +223,15 @@ If you implement the hook correctly, it can be used for both notes and phone num
 
 **Solution:**
 Reusable custom hook implemented as instructed.
+
+## Exercise 7.9: automatic code formatting
+**Task:**
+In the previous parts, we used ESLint to ensure that code follows the defined conventions. Prettier is yet another approach for the same. According to the documentation, Prettier is an opinionated code formatter, that is, Prettier not only controls the code style but also formats the code according to the definition.
+
+Prettier is easy to integrate into the code editor so that when the code is saved, it is automatically formatted correctly.
+
+Take Prettier to use in your app and configure it to work with your editor.
+
+**Solution:**
+Configured in WebStorm by JetBrains by following https://www.jetbrains.com/help/webstorm/prettier.html#ws_prettier_reformat_code instructions.
+Reformatted the project's *.js files with Prettier in the IDE.
