@@ -234,4 +234,6 @@ Take Prettier to use in your app and configure it to work with your editor.
 
 **Solution:**
 Configured in WebStorm by JetBrains by following https://www.jetbrains.com/help/webstorm/prettier.html#ws_prettier_reformat_code instructions.
-Reformatted the project's *.js files with Prettier in the IDE.
+Reformatted the hooks-ultimate-notes and bloglist project *.js files with Prettier configured in the WebStorm IDE.
+
+
