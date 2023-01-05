@@ -237,3 +237,11 @@ Configured in WebStorm by JetBrains by following https://www.jetbrains.com/help/
 Reformatted the hooks-ultimate-notes and bloglist project *.js files with Prettier configured in the WebStorm IDE.
 
 
+## Exercise 7.10: redux, step1
+**Task:**
+Refactor the application from using the internal React component state to using Redux for the application's state management.
+
+Change the application's notifications to use Redux at this point of the exercise set.
+
+**Solution:**
+Refactored to use Redux.

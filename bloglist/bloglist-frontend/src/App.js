@@ -5,34 +5,28 @@ import loginService from "./services/login";
 
 import Togglable from "./components/Togglable";
 import BlogForm from "./components/BlogForm";
+import Notification from "./components/Notification";
 
-const Notification = ({ message, type }) => {
-  let notificationClass = `notification ${type}`;
-
-  return type !== "none" ? (
-    <div id="notification" className={notificationClass}>
-      <p> {message} </p>
-    </div>
-  ) : null;
-};
+import { useDispatch, useSelector } from "react-redux";
+import { initializeBlogs, createBlog } from "./reducers/blogReducer";
+import { setNotification, MessageTypes } from "./reducers/notificationReducer";
 
 const App = () => {
-  const [blogs, setBlogs] = useState([]);
+  const dispatch = useDispatch();
+
+  // const [blogs, setBlogs] = useState([]);
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [user, setUser] = useState(null);
 
-  const MessageTypes = {
-    Success: "success",
-    Error: "error",
-    None: "none",
-  };
-  const [message, setMessage] = useState(MessageTypes.None);
-  const [messageType, setMessageType] = useState(MessageTypes.None);
-
   useEffect(() => {
-    blogService.getAll().then((blogs) => setBlogs(blogs));
-  }, []);
+    dispatch(initializeBlogs());
+  }, [dispatch]);
+
+  const blogs = useSelector((state) => {
+    console.log("state.blogs", state.blogs);
+    return state.blogs;
+  });
 
   useEffect(() => {
     const loggedUserJSON = window.localStorage.getItem("loggedBloglistappUser");
@@ -60,11 +54,9 @@ const App = () => {
       setUsername("");
       setPassword("");
     } catch (exception) {
-      setMessage("Wrong username or password.");
-      setMessageType(MessageTypes.Error);
-      setTimeout(() => {
-        setMessageType(MessageTypes.None);
-      }, 5000);
+      dispatch(
+        setNotification("Wrong username or password.", MessageTypes.Error, 5)
+      );
     }
   };
 
@@ -79,63 +71,24 @@ const App = () => {
 
   const createNewBlog = async ({ title, author, url }) => {
     try {
-      const newBlog = await blogService.create({ title, author, url });
-      newBlog.user = user;
-      blogFormRef.current.toggleVisibility();
-      setBlogs(blogs.concat(newBlog));
-      setMessage(`A new blog ${newBlog.title} by ${newBlog.author} added`);
-      setMessageType(MessageTypes.Success);
-      setTimeout(() => {
-        setMessageType(MessageTypes.None);
-      }, 5000);
+      dispatch(createBlog({ title, author, url }));
     } catch (e) {
-      setMessage("Error, new blog could not be added.");
-      setMessageType(MessageTypes.Error);
-      setTimeout(() => {
-        setMessageType(MessageTypes.None);
-      }, 5000);
-    }
-  };
-
-  const updateBlog = async (blogData) => {
-    try {
-      const updatedBlog = await blogService.update(blogData);
-      updatedBlog.user = blogData.user; // updatedBlog has user ID instead of user object
-      setBlogs(
-        blogs.map((blog) => (blog.id !== blogData.id ? blog : updatedBlog))
+      dispatch(
+        setNotification(
+          `Error, new blog could not be added.`,
+          MessageTypes.Error,
+          5
+        )
       );
-      setMessage(`Blog ${blogData.title} successfully updated`);
-      setMessageType(MessageTypes.Success);
-      setTimeout(() => {
-        setMessageType(MessageTypes.None);
-      }, 5000);
-    } catch (e) {
-      setMessage(`Error while updating ${blogData.title} blog`);
-      setMessageType(MessageTypes.Error);
-      setTimeout(() => {
-        setMessageType(MessageTypes.None);
-      }, 5000);
     }
-  };
 
-  const removeBlog = async (blog) => {
-    try {
-      if (window.confirm(`Delete ${blog.title} ?`)) {
-        await blogService.remove(blog.id);
-        setBlogs(blogs.filter((a) => a.id !== blog.id));
-        setMessage(`Blog ${blog.title} successfully removed`);
-        setMessageType(MessageTypes.Success);
-        setTimeout(() => {
-          setMessageType(MessageTypes.None);
-        }, 5000);
-      }
-    } catch (e) {
-      setMessage(`Could not remove blog ${blog.title}`);
-      setMessageType(MessageTypes.Error);
-      setTimeout(() => {
-        setMessageType(MessageTypes.None);
-      }, 5000);
-    }
+    dispatch(
+      setNotification(
+        `A new blog ${title} by ${author} added`,
+        MessageTypes.Success,
+        5
+      )
+    );
   };
 
   const loginForm = () => (
@@ -180,16 +133,10 @@ const App = () => {
           <BlogForm createNewBlog={createNewBlog} />
         </Togglable>
 
-        {blogs
+        {[...blogs]
           .sort((blog1, blog2) => blog2.likes - blog1.likes)
           .map((blog) => (
-            <Blog
-              key={blog.id}
-              blog={blog}
-              updateBlog={updateBlog}
-              removeBlog={removeBlog}
-              loggedInUser={user}
-            />
+            <Blog key={blog.id} blog={blog} loggedInUser={user} />
           ))}
       </div>
     );
@@ -197,7 +144,7 @@ const App = () => {
 
   return (
     <div>
-      <Notification message={message} type={messageType} />
+      <Notification />
       {user === null ? loginForm() : blogList()}
     </div>
   );
