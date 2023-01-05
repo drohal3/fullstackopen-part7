@@ -247,12 +247,19 @@ Change the application's notifications to use Redux at this point of the exercis
 Refactored to use Redux.
 
 ## Exercise 7.11: redux, step2
-## Task:
+**Task:**
 Note that this and the next two exercises are quite laborious but incredibly educational.
 
 Store the information about blog posts in the Redux store. In this exercise, it is enough that you can see the blogs in the backend and create a new blog.
 
 You are free to manage the state for logging in and creating new blog posts by using the internal state of React components.
 
-## Solution:
+**Solution:**
+Implemented together with Exercise 7.10
+
+## Exercise 7.12: redux, step3
+**Task:**
+Expand your solution so that it is again possible to like and delete a blog.
+
+**Solution:**
 Implemented together with Exercise 7.10
